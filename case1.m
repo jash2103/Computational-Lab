@@ -1,18 +1,18 @@
 % Define fin properties
 L = 0.1; % Fin length (m)
-D = 0.02; % Fin diameter (m)
+t = 0.03; % Fin thickness (m)
 k = 220; % Thermal conductivity (W/m-K)
-h = 125; % Convection coefficient (W/m^2-K)
-Tamb = 200; % Ambient temperature (C)
-Tbase = 20; % Base temperature (C)
+h = 40; % Convection coefficient (W/m^2-K)
+Tamb = 20; % Ambient temperature (C)
+Tbase = 250; % Base temperature (C)
 
 % Discretization
 dx = 0.005; % Node spacing (m)
-Nx = floor(L/dx) + 1; % Number of nodes
+Nx = (L/dx) + 1; % Number of nodes
 
 % Material properties
-A = pi*(D/2)^2; % Fin cross-sectional area (m^2)
-p = pi*D; % Fin perimeter (m)
+A = (t*L)/2; % Fin cross-sectional area (m^2)
+p = t*3; % Fin perimeter (m)
 
 % Initialize temperature array
 T = ones(Nx,1)*Tamb;
@@ -22,7 +22,7 @@ T(1) = Tbase;
 
 % Finite difference coefficients
 a = k*A/dx^2;
-b = -2*k*A/dx^2 - h*p*dx/A;
+b = 2*k*A/dx^2 - h*p;
 c = k*A/dx^2;
 
 % Loop through interior nodes
@@ -39,8 +39,8 @@ figure;
 subplot(1,2,1);
 plot(x, T);
 hold on;
-plot([0 L], [Tamb Tamb], 'r--'); % Plot ambient temperature line
-hold off;
+%plot([0 L], [Tamb Tamb], 'r--'); % Plot ambient temperature line
+%hold off;
 title('Temperature Distribution Along the Fin');
 xlabel('x (m)');
 ylabel('Temperature (C)');
@@ -52,4 +52,4 @@ contourf(X, Y, Y);
 colorbar;
 title('Contour Plot of Temperature Distribution');
 xlabel('x (m)');
-ylabel('Temperature (C)');
+ylabel('Temperature (C)');
